@@ -15,10 +15,10 @@
 
 
 /* for command chaining */
-#define CMD_NORM	0
-#define CMD_OR		1
-#define CMD_AND		2
-#define CMD_CHAIN	3
+#define CMD_NORM        0
+#define CMD_OR          1
+#define CMD_AND         2
+#define CMD_CHAIN       3
 
 /* for read/write buffers */
 #define READ_BUF_SIZE 1024
@@ -26,15 +26,15 @@
 #define BUF_FLUSH -1
 
 /* for convert_number() */
-#define CONVERT_LOWERCASE	1
-#define CONVERT_UNSIGNED	2
+#define CONVERT_LOWERCASE       1
+#define CONVERT_UNSIGNED        2
 
 /* 1 if using system getline() */
 #define USE_GETLINE 0
 #define USE_STRTOK 0
 
-#define HIST_FILE	".simple_shell_history"
-#define HIST_MAX	4096
+#define HIST_FILE       ".simple_shell_history"
+#define HIST_MAX        4096
 
 extern char **environ;
 
@@ -47,9 +47,9 @@ extern char **environ;
  */
 typedef struct liststr
 {
-	int num;
-	char *str;
-	struct liststr *next;
+int num;
+char *str;
+struct liststr *next;
 } list_t;
 
 /**
@@ -76,30 +76,30 @@ typedef struct liststr
  */
 typedef struct passinfo
 {
-	char *arg;
-	char **argv;
-	char *path;
-	int argc;
-	unsigned int line_count;
-	int err_num;
-	int linecount_flag;
-	char *fname;
-	list_t *env;
-	list_t *history;
-	list_t *alias;
-	char **environ;
-	int env_changed;
-	int status;
+char *arg;
+char **argv;
+char *path;
+int argc;
+unsigned int line_count;
+int err_num;
+int linecount_flag;
+char *fname;
+list_t *env;
+list_t *history;
+list_t *alias;
+char **environ;
+int env_changed;
+int status;
 
-	char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
-	int cmd_buf_type; /* CMD_type ||, &&, ; */
-	int readfd;
-	int histcount;
+char **cmd_buf; /* pointer to cmd ; chain buffer, for memory mangement */
+int cmd_buf_type; /* CMD_type ||, &&, ; */
+int readfd;
+int histcount;
 } info_t;
 
 #define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
-		0, 0, 0}
+0, 0, 0}
 
 /**
  * struct builtin - contains a builtin string and related function
@@ -109,8 +109,8 @@ typedef struct passinfo
 
 typedef struct builtin
 {
-	char *type;
-	int (*func)(info_t *);
+char *type;
+int (*func)(info_t *);
 } builtin_table;
 
 
@@ -146,10 +146,10 @@ char *_strdup(const char *);
 void _puts(char *);
 int _putchar(char);
 
-/* toem_exits.c */
-char *_strncat(char*, int, char*);
-char *_strncpy(char *, char *, int);
-char *_strchr(char *, char);
+/* toem_copy_string.c */
+char *_strchr(char *s, char c);
+char *_strncat(char *dest, char *src, int n);
+char *_strncpy(char *dest, char *src, int n);
 
 /* toem_tokenizer.c */
 char **strtow(char *, char *);
@@ -166,8 +166,8 @@ int bfree(void **);
 /* toem_atoi.c */
 int interactive(info_t *);
 int _atoi(char *);
-int is_delim(char *, char);
 int _isalpha(int);
+int is_delim(char c, char *delim);
 
 /* toem_errors1.c */
 int _erratoi(char *);
@@ -186,9 +186,13 @@ int _myhistory(info_t *);
 int _myalias(info_t *);
 
 /*toem_getline.c */
-ssize_t get_input(info_t *);
-int _getline(info_t *, char **, size_t *);
-void sigintHandler(int);
+void sigintHandler(__attribute__((unused))int sig_num);
+int _getline(info_t *info, char **ptr, size_t *length);
+ssize_t read_buf(info_t *info, char *buf, size_t *i);
+ssize_t get_input(info_t *info);
+ssize_t input_buf(info_t *info, char **buf, size_t *len);
+int is_chain(info_t *info, char *buf, size_t *j);
+
 
 /* toem_getinfo.c */
 void clear_info(info_t *);
@@ -228,9 +232,8 @@ size_t print_list(const list_t *);
 ssize_t get_node_index(list_t *, list_t *);
 list_t *node_starts_with(list_t *, char *, char);
 
-/* toem_vars.c */
+/* toem_variables.c */
 void check_chain(info_t *, char *, size_t *, size_t, size_t);
-int is_chain(info_t *, size_t *, char *);
 int replace_vars(info_t *);
 int replace_alias(info_t *);
 int replace_string(char **, char *);

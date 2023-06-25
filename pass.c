@@ -57,7 +57,7 @@ char *dup_chars(char *pathstr, int start, int stop)
 char *find_path(info_t *info, char *pathstr, char *cmd)
 {
 	int m = 0;
-       int curr_pos = 0;
+	int curr_pos = 0;
 	char *path;
 
 	if (!pathstr)
